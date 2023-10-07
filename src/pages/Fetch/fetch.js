@@ -1,10 +1,9 @@
-// Fetch.js
-import React, { useState, useEffect } from "react";
-import ProgressBar from "./ProgressBar"; // Import ProgressBar component
-
+import React, { useEffect, useState } from "react";
+import Navbar from '../Nav'
+import './fetch.css'
+import { Link } from "react-router-dom";
 function Fetch() {
   const [data, setData] = useState([]);
-  const [selectedAwb, setSelectedAwb] = useState(""); // State to store selected AWB number
 
   useEffect(() => {
     const fetchData = () => {
@@ -19,50 +18,44 @@ function Fetch() {
         });
     };
 
-    fetchData();
+    fetchData(); 
   }, []);
 
-  const handleTrackClick = (awb) => {
-    // Set the selected AWB number when clicking the "Track" button
-    setSelectedAwb(awb);
-  };
-
   return (
-    <div>
-      {data.map((item, index) => (
-        <div key={index}>
-          <div className="overflow-x-auto">
-            <table className="table table-zebra mx-auto w-1/2">
-              <thead>
-                <tr>
-                  <th className="text-center w-1/4">Name</th>
-                  <th className="text-center w-1/4">Brand</th>
-                  <th className="text-center w-1/4"> Price</th>
-                  <th className="text-center w-1/4">Rating</th>
-                  <th className="text-center w-1/4">Tracking</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td className="text-center align-middle w-1/4">{item.awb}</td>
-                  <td className="text-center align-middle w-1/4">{item.sender_data}</td>
-                  <td className="text-center align-middle w-1/4">{item.dimensions}</td>
-                  <td className="text-center align-middle w-1/4">{item.destination_details}</td>
-                  <td>
-                    <button
-                      className="btn btn-neutral"
-                      onClick={() => handleTrackClick(item.awb)} // Pass the AWB number to the click handler
-                    >
+   <div>
+   <div>
+    <Navbar/>
+   </div>
+    <div className="overflow-x-auto mt-8 shadow-black">
+    <table className="table table-zebra mx-auto w-1/2">
+        <thead className="bg-yellow-400 text-black">
+          <tr>
+            <th className="text-center w-1/4">AWB</th>
+            <th className="text-center w-1/4">Sender Data</th>
+            <th className="text-center w-1/4">Origin Data</th>
+            <th className="text-center w-1/4">Destination</th>
+            <th className="text-center w-1/4">Tracking</th>
+          </tr>
+        </thead>
+        <tbody className='tboby'>
+          {data.map((item, index) => (
+            <tr key={index}>
+              <td className="text-center align-middle w-1/4">{item.awb}</td>
+              <td className="text-center align-middle w-1/4">{item.sender_data}</td> 
+              <td className="text-center align-middle w-1/4">{item.origin_data}</td>
+              <td className="text-center align-middle w-1/4">{item.destination_data}</td>
+              <td>
+                <Link to='/shipping'>
+                    <button className="btn hover:bg-yellow-400 hover:text-black">
                       Track
                     </button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      ))}
-      {selectedAwb && <ProgressBar trackingNumber={selectedAwb} />} {/* Render ProgressBar */}
+                </Link>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
     </div>
   );
 }
